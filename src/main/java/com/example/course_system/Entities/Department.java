@@ -23,4 +23,6 @@ public class Department {
     private String departmentName;
 
     private String departmentCode;
+
+    private String departmentLocation;
 }
