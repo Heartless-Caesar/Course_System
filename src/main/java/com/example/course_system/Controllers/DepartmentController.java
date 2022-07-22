@@ -1,10 +1,12 @@
 package com.example.course_system.Controllers;
 
 import com.example.course_system.Entities.Department;
+import com.example.course_system.ErrorHandling.DepartmentExceptionHandler;
 import com.example.course_system.Services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -14,7 +16,7 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @PostMapping("/department/create")
-    public Department CreateDepartment(@RequestBody Department deptObj){
+    public Department CreateDepartment(@Valid @RequestBody Department deptObj){
      return departmentService.createDepartment(deptObj);
     }
 
@@ -24,8 +26,13 @@ public class DepartmentController {
     }
 
     @GetMapping("/department/{id}")
-    public Department GetSingleDepartment(@PathVariable("id") Long deptId){
+    public Department GetSingleDepartment(@PathVariable("id") Long deptId) throws DepartmentExceptionHandler {
         return departmentService.getSingleDepartment(deptId);
+    }
+
+    @GetMapping("/department/{name}")
+    public Department GetDepartmentByName(@PathVariable("name") String deptName){
+        return departmentService.findDepartmentByDepartmentNameIgnoreCase(deptName);
     }
 
     @DeleteMapping("/department/delete/{id}")

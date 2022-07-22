@@ -1,12 +1,16 @@
 package com.example.course_system.Services;
 
 import com.example.course_system.Entities.Department;
+import com.example.course_system.ErrorHandling.DepartmentExceptionHandler;
 import com.example.course_system.Repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+@Service
 public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
@@ -23,8 +27,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department getSingleDepartment(Long deptId) {
-        return departmentRepository.findById(deptId).get();
+    public Department getSingleDepartment(Long deptId) throws DepartmentExceptionHandler {
+       Optional<Department> dept = departmentRepository.findById(deptId);
+
+       if(!dept.isPresent()){
+           throw new DepartmentExceptionHandler("Department not available");
+       }
+
+       return dept.get();
     }
 
     @Override
@@ -53,5 +63,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         return departmentRepository.save(dept);
+    }
+
+    @Override
+    public Department findDepartmentByDepartmentNameIgnoreCase(String deptName) {
+        return departmentRepository.findDepartmentByDepartmentNameIgnoreCase(deptName);
     }
 }
