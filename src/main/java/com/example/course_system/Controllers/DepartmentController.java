@@ -25,7 +25,7 @@ public class DepartmentController {
         return departmentService.findAllDepartments();
     }
 
-    @GetMapping("/department/{id}")
+    @GetMapping("/department/single/{id}")
     public Department GetSingleDepartment(@PathVariable("id") Long deptId) throws DepartmentExceptionHandler {
         return departmentService.getSingleDepartment(deptId);
     }
